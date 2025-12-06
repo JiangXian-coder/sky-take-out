@@ -58,4 +58,11 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
             return false;
         }
     }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        //移除线程变量，避免资源浪费
+        BaseContext.removeCurrentId();
+        log.info("员工ID已从线程变量中移除......");
+    }
 }
