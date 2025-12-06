@@ -88,12 +88,26 @@ public class EmployeeController {
     }
 
     @PostMapping("/status/{status}")
-    public Result startOrStop(@RequestParam Long id,@PathVariable Integer status){
+    public Result startOrStop(@RequestParam Long id, @PathVariable Integer status) {
         //通过前端传递的status来决定员工账号的状态，
         // 0表示禁用员工账号，1表示启用员工账号。前端已经写好了逻辑
         //这里就是我们要把数据库里的status改为参数里的status
-        log.info("员工状态改变:{},{}",id,status);
-        employeeService.updateStatus(id,status);
+        log.info("员工状态改变:{},{}", id, status);
+        employeeService.updateStatus(id, status);
+        return Result.success();
+    }
+
+    @GetMapping("/{id}")
+    public Result<Employee> getById(@PathVariable Long id) {
+        log.info("根据id查询员工信息，ID:{}", id);
+        Employee employee = employeeService.getById(id);
+        return Result.success(employee);
+    }
+
+    @PutMapping
+    public Result updateEmp(@RequestBody EmployeeDTO employeeDTO){
+        log.info("员工信息修改:{}", employeeDTO);
+        employeeService.updateEmp(employeeDTO);
         return Result.success();
     }
 
