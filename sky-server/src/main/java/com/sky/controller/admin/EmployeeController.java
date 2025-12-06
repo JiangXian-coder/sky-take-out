@@ -86,4 +86,15 @@ public class EmployeeController {
         return Result.success(pageResult);
 
     }
+
+    @PostMapping("/status/{status}")
+    public Result startOrStop(@RequestParam Long id,@PathVariable Integer status){
+        //通过前端传递的status来决定员工账号的状态，
+        // 0表示禁用员工账号，1表示启用员工账号。前端已经写好了逻辑
+        //这里就是我们要把数据库里的status改为参数里的status
+        log.info("员工状态改变:{},{}",id,status);
+        employeeService.updateStatus(id,status);
+        return Result.success();
+    }
+
 }
