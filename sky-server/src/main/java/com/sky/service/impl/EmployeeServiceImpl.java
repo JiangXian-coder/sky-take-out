@@ -78,48 +78,86 @@ public class EmployeeServiceImpl implements EmployeeService {
         //设置默认密码
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
         //设置创建时间
-        employee.setCreateTime(LocalDateTime.now());
-        //设置更新时间
-        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setCreateTime(LocalDateTime.now());
+//        //设置更新时间
+//        employee.setUpdateTime(LocalDateTime.now());
         //设置创建人ID
-        employee.setCreateUser(BaseContext.getCurrentId());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+//        employee.setCreateUser(BaseContext.getCurrentId());
+//        employee.setUpdateUser(BaseContext.getCurrentId());
         employeeMapper.add(employee);
     }
 
+        /**
+     * 员工分页查询方法
+     *
+     * @param employeePageQueryDTO 员工分页查询条件数据传输对象，包含页码、每页大小等查询参数
+     * @return PageResult 分页查询结果对象，包含总记录数和当前页的数据列表
+     */
     @Override
     public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
+        // 设置分页参数
         PageHelper.startPage(employeePageQueryDTO.getPage(),
                 employeePageQueryDTO.getPageSize());
         log.info("员工分页查询开始......");
+        // 执行分页查询
         Page<Employee> page = employeeMapper.pageQuery(employeePageQueryDTO);
         long total = page.getTotal();
         List<Employee> result = page.getResult();
+        // 封装分页结果
         return new PageResult(total, result);
     }
 
+
+        /**
+     * 更新员工状态
+     *
+     * @param id 员工ID
+     * @param status 员工状态
+     */
     @Override
     public void updateStatus(Long id, Integer status) {
-        Employee employee = Employee.builder().status(status).id(id).updateTime(LocalDateTime.now())
+        // 构建员工对象并设置更新时间和状态
+        Employee employee = Employee.builder().status(status).id(id)
                 .build();
 
+        // 执行更新操作
         employeeMapper.update(employee);
     }
 
+
+        /**
+     * 根据员工ID获取员工信息
+     *
+     * @param id 员工ID
+     * @return 员工对象，其中密码字段被替换为掩码显示
+     */
     @Override
     public Employee getById(Long id) {
+        // 查询员工信息
         Employee employee = employeeMapper.getById(id);
+        // 隐藏密码信息
         employee.setPassword("****");
         return employee;
     }
 
+
+        /**
+     * 更新员工信息
+     * @param employeeDTO 员工数据传输对象，包含要更新的员工信息
+     */
     @Override
     public void updateEmp(EmployeeDTO employeeDTO) {
+        // 将DTO对象转换为实体对象
         Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDTO,employee);
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+
+        // 设置更新时间和更新人信息
+//        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setUpdateUser(BaseContext.getCurrentId());
+
+        // 执行数据库更新操作
         employeeMapper.update(employee);
     }
+
 
 }
