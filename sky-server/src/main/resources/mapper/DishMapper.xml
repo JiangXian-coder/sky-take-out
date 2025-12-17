@@ -26,4 +26,12 @@
         </where>
     </select>
 
+    <delete id="deleteBatchByIds">
+        delete
+        from dish
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>
