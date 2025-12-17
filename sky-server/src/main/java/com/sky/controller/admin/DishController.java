@@ -1,14 +1,14 @@
 package com.sky.controller.admin;
 
 import com.sky.dto.DishDTO;
+import com.sky.dto.DishPageQueryDTO;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.DishService;
+import com.sky.vo.DishVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin/dish")
@@ -30,5 +30,19 @@ public class DishController {
         dishService.saveWithFlavor(dishDTO);
         return Result.success();
     }
+
+    /**
+     * 分页查询菜品信息
+     * @param dishPageQueryDTO 菜品分页查询条件对象，包含页码、每页条数、菜品名称、分类ID等查询参数
+     * @return 返回分页查询结果，包含菜品列表和总记录数
+     */
+    @GetMapping("/page")
+    public Result<PageResult> pageQuery(DishPageQueryDTO dishPageQueryDTO){
+        log.info("分页查询菜品信息:{}",dishPageQueryDTO);
+        // 执行菜品分页查询业务逻辑
+        PageResult pageResult = dishService.pagqQuery(dishPageQueryDTO);
+        return Result.success(pageResult);
+    }
+
 
 }
