@@ -19,12 +19,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Component
 @Slf4j
-public class JwtTokenAdminInterceptor implements HandlerInterceptor {
+public class JwtTokenUserInterceptor implements HandlerInterceptor {
 
     @Autowired
     private JwtProperties jwtProperties;
-
-
 
     /**
      * 校验jwt
@@ -43,16 +41,16 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
         }
 
         //1、从请求头中获取令牌
-        String token = request.getHeader(jwtProperties.getAdminTokenName());
+        String token = request.getHeader(jwtProperties.getUserTokenName());
 
         //2、校验令牌
         try {
-            log.info("jwt校验:{}", token);
-            Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
-            Long empId = Long.valueOf(claims.get(JwtClaimsConstant.EMP_ID).toString());
-            log.info("当前员工id：", empId);
-            BaseContext.setCurrentId(empId);
-            log.info("员工ID已存到线程变量中......");
+            log.info("用户jwt校验:{}", token);
+            Claims claims = JwtUtil.parseJWT(jwtProperties.getUserSecretKey(), token);
+            Long userId = Long.valueOf(claims.get(JwtClaimsConstant.USER_ID).toString());
+            log.info("当前用户id：{}", userId);
+            BaseContext.setCurrentId(userId);
+            log.info("用户ID已存到线程变量中......");
             //3、通过，放行
             return true;
         } catch (Exception ex) {
@@ -66,6 +64,6 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         //移除线程变量，避免资源浪费
         BaseContext.removeCurrentId();
-        log.info("员工ID已从线程变量中移除......");
+        log.info("用户ID已从线程变量中移除......");
     }
 }

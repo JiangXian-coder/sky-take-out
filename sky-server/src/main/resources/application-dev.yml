@@ -11,4 +11,10 @@ sky:
     endpoint: oss-cn-shenzhen.aliyuncs.com
     access-key-secret: ${OSS_ACCESS_KEY_SECRET}
     access-key-id: ${OSS_ACCESS_KEY_ID}
-
+  redis:
+    host: localhost
+    database: 1
+    port: 6379
+  wechat:
+    appid: wxc2d4a42f2710c5bd
+    secret: f184dc2894bfb274c0c3e1a0c735e284

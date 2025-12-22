@@ -30,6 +30,9 @@
         <jjwt>0.9.1</jjwt>
         <jaxb-api>2.3.1</jaxb-api>
         <poi>3.16</poi>
+        <spring.boot.version>2.7.3</spring.boot.version>
+
+        <spring.data.redis>2.7.3</spring.data.redis>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -86,6 +89,22 @@
                 <artifactId>aspectjweaver</artifactId>
                 <version>${aspectj}</version>
             </dependency>
+
+            <!--            Redis-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>${spring.data.redis}</version>
+            </dependency>
+
+
+            <!-- Spring Cache -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-cache</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+
 
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
